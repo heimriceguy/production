@@ -38,10 +38,15 @@ PING_PREVIEWS = """\
 - Subscriber Items: `@General News - Month Subscriber Promotions`
 - JP: `@General News - Jump Point`
 """
-CHANNELS = """\
+IDS = """\
+**Channels**
 Patch Notes - `585952222853201941`
 SC News - `569635458183856149`
 General News - `803341100618219540`
+**Roles**
+Patch Notes - `620025894559547412`
+SC News - `620025828079697920`
+General News - `803343410794594385`
 """
 
 
@@ -94,10 +99,10 @@ class TemplatesCog(commands.Cog, name="Templates"):
             allowed_mentions=discord.AllowedMentions.none(),
         )
 
-    @commands.command(brief="Shows all the channel IDs for announcements.")
-    async def channels(self, ctx: commands.Context) -> None:
+    @commands.command(brief="Shows all the channel and role IDs for announcements.")
+    async def ids(self, ctx: commands.Context) -> None:
         await ctx.reply(
-            embed=discord.Embed(color=self.bot.config.embed_color, description=CHANNELS)
+            embed=discord.Embed(color=self.bot.config.embed_color, description=IDS)
         )
 
 

@@ -22,9 +22,20 @@ def reformat_description(description: str) -> str:
     for index, line in enumerate(split_description):
         if line.startswith("-"):
             split_description[index] = "➣" + line[1:]
+    for index, line in enumerate(split_description):
+        if line.startswith("+"):
+            split_description[index] = "ㅤ✦" + line[1:]
 
     return "\n".join(split_description)
 
+#def reformat_description(description: str) -> str:
+#    split_description = description.split("\n")
+#
+#    for index, line in enumerate(split_description):
+#        if line.startswith(">"):
+#            split_description[index] = "✦" + line[1:]
+#
+#    return "\n".join(split_description)
 
 class AnnouncementCog(commands.Cog, name="Announcements"):
     def __init__(self, bot: commands.Bot) -> None:
@@ -98,6 +109,7 @@ class Announcement:
         *,
         title: str = "Announcement",
         url: Optional[str] = None,
+        youtube_url: Optional[str] = None,
         description: Optional[str] = None,
         image_url: Optional[str] = None,
         channel: Optional[discord.abc.Messageable] = None,
@@ -109,6 +121,7 @@ class Announcement:
     ) -> None:
         self.title = title
         self.url = url
+        self.youtube_url = youtube_url
         self.description = description
         self.image_url = image_url
         self.channel = channel
@@ -200,6 +213,7 @@ class Announcement:
 
         ping = None
         ping_preview = None
+        youtube_url = None
         ping_message = await get_ping_message(message)
 
         if ping_message:
@@ -220,6 +234,7 @@ class Announcement:
         return cls(
             title=embed.title,
             url=url,
+            youtube_url=youtube_url,
             description=description,
             image_url=embed.image.url,
             channel=message.channel,
@@ -249,20 +264,22 @@ class AnnouncementBuilder:
         self.view.clear_items()
 
         self.options: list[Option] = []
-        self.add_option(Option(id="title", name="Title"))
-        self.add_option(Option(id="url", name="URL"))
+        self.add_option(Option(id="title", name="Title", directions= "No formatting needed here.", row=1))
+        self.add_option(Option(id="url", name="URL", row=1))
+        self.add_option(Option(id= "youtube_url", name= "Youtube Link", directions= "Only use for Youtube links.", row=1))
         self.add_option(
             Option(
                 id="description",
                 name="Description",
-                directions="Here are some directions.",
+                directions="Formatting is required here.",
                 is_long=True,
+                row=2
             )
         )
-        self.add_option(Option(id="image_url", name="Image"))
-        self.add_option(Option(id="channel", name="Channel", row=1))
-        self.add_option(Option(id="ping", name="Ping", row=1))
-        self.add_option(Option(id="ping_preview", name="Ping Preview", row=1))
+        self.add_option(Option(id="image_url", name="Image", directions= "Please provide the image link.", row=2))
+        self.add_option(Option(id="channel", name="Channel", directions= "Please provide channel ID, use &ids to get them.", row=3))
+        self.add_option(Option(id="ping", name="Ping", directions= "Please provide role ID, use &ids to get them.", row=3))
+        self.add_option(Option(id="ping_preview", name="Ping Preview", directions= "Please provide ping preview, use &previews for help.", row=3))
 
         for item in _items:
             self.view.add_item(item)
@@ -322,7 +339,7 @@ class AnnouncementBuilderView(discord.ui.View):
             )
         )
 
-    @discord.ui.button(custom_id="private", label="Private", row=2)
+    @discord.ui.button(custom_id="private", label="Private", row=4)
     async def toggle_private(
         self, interaction: discord.Interaction, button: discord.ui.Button
     ) -> None:
@@ -343,7 +360,7 @@ class AnnouncementBuilderView(discord.ui.View):
         await self._update(interaction)
 
     @discord.ui.button(
-        custom_id="notification", label="Published", row=2, disabled=True
+        custom_id="notification", label="Published", row=4, disabled=True
     )
     async def toggle_notification(
         self, interaction: discord.Interaction, button: discord.ui.Button
@@ -365,7 +382,7 @@ class AnnouncementBuilderView(discord.ui.View):
         await self._update(interaction)
 
     @discord.ui.button(
-        custom_id="publish", label="Post", style=discord.ButtonStyle.blurple, row=2
+        custom_id="publish", label="Post", style=discord.ButtonStyle.blurple, row=4
     )
     async def publish(
         self, interaction: discord.Interaction, button: discord.ui.Button
@@ -378,6 +395,7 @@ class AnnouncementBuilderView(discord.ui.View):
 
         announcement = self.announcement_builder.announcement
         role = announcement.ping
+        youtube_url = announcement.youtube_url
         allowed_mentions = (
             discord.AllowedMentions(everyone=False, users=False, roles=[role])
             if role
@@ -407,20 +425,31 @@ class AnnouncementBuilderView(discord.ui.View):
         if announcement.ping_preview and not announcement.ping:
             await interaction.response.send_message(
                 "You cannot have a ping preview selected without a ping!",
-                ephemeral=True,
+                ephemeral=True, 
             )
             return
 
         await interaction.response.send_message(
             "Your announcement was posted! 🎉", ephemeral=True
         )
+        await interaction.channel.send("https://i.imgur.com/HRoxTzg.gif")
         self.stop()
+
+        if announcement.youtube_url:
+            message = await announcement.channel.send(
+            announcement.youtube_url,    
+        )
+            if announcement.will_notify:
+                await message.publish()
 
         message = await announcement.channel.send(
             embed=await announcement.get_embed(bot=interaction.client),
         )
         if announcement.will_notify:
             await message.publish()
+
+        channel = self.bot.get_channel(1091876261938343986)
+        await channel.send("test")
 
         if announcement.ping and announcement.ping_preview:
             await announcement.channel.send(
