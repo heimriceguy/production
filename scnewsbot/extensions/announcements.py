@@ -360,7 +360,7 @@ class AnnouncementBuilderView(discord.ui.View):
         await self._update(interaction)
 
     @discord.ui.button(
-        custom_id="notification", label="Published", row=4, disabled=True
+        custom_id="notification", label="Publish", row=4, disabled=True
     )
     async def toggle_notification(
         self, interaction: discord.Interaction, button: discord.ui.Button
@@ -447,9 +447,6 @@ class AnnouncementBuilderView(discord.ui.View):
         )
         if announcement.will_notify:
             await message.publish()
-
-        channel = self.bot.get_channel(1091876261938343986)
-        await channel.send("test")
 
         if announcement.ping and announcement.ping_preview:
             await announcement.channel.send(
