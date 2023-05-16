@@ -28,7 +28,8 @@ def reformat_description(description: str) -> str:
 
     return "\n".join(split_description)
 
-#def reformat_description(description: str) -> str:
+
+# def reformat_description(description: str) -> str:
 #    split_description = description.split("\n")
 #
 #    for index, line in enumerate(split_description):
@@ -36,6 +37,7 @@ def reformat_description(description: str) -> str:
 #            split_description[index] = "✦" + line[1:]
 #
 #    return "\n".join(split_description)
+
 
 class AnnouncementCog(commands.Cog, name="Announcements"):
     def __init__(self, bot: commands.Bot) -> None:
@@ -264,22 +266,61 @@ class AnnouncementBuilder:
         self.view.clear_items()
 
         self.options: list[Option] = []
-        self.add_option(Option(id="title", name="Title", directions= "No formatting needed here.", row=1))
+        self.add_option(
+            Option(
+                id="title", name="Title", directions="No formatting needed here.", row=1
+            )
+        )
         self.add_option(Option(id="url", name="URL", row=1))
-        self.add_option(Option(id= "youtube_url", name= "Youtube Link", directions= "Only use for Youtube links.", row=1))
+        self.add_option(
+            Option(
+                id="youtube_url",
+                name="Youtube Link",
+                directions="Only use for Youtube links.",
+                row=1,
+            )
+        )
         self.add_option(
             Option(
                 id="description",
                 name="Description",
                 directions="Formatting is required here.",
                 is_long=True,
-                row=2
+                row=2,
             )
         )
-        self.add_option(Option(id="image_url", name="Image", directions= "Please provide the image link.", row=2))
-        self.add_option(Option(id="channel", name="Channel", directions= "Please provide channel ID, use &ids to get them.", row=3))
-        self.add_option(Option(id="ping", name="Ping", directions= "Please provide role ID, use &ids to get them.", row=3))
-        self.add_option(Option(id="ping_preview", name="Ping Preview", directions= "Please provide ping preview, use &previews for help.", row=3))
+        self.add_option(
+            Option(
+                id="image_url",
+                name="Image",
+                directions="Please provide the image link.",
+                row=2,
+            )
+        )
+        self.add_option(
+            Option(
+                id="channel",
+                name="Channel",
+                directions="Please provide channel ID, use &ids to get them.",
+                row=3,
+            )
+        )
+        self.add_option(
+            Option(
+                id="ping",
+                name="Ping",
+                directions="Please provide role ID, use &ids to get them.",
+                row=3,
+            )
+        )
+        self.add_option(
+            Option(
+                id="ping_preview",
+                name="Ping Preview",
+                directions="Please provide ping preview, use &previews for help.",
+                row=3,
+            )
+        )
 
         for item in _items:
             self.view.add_item(item)
@@ -359,9 +400,7 @@ class AnnouncementBuilderView(discord.ui.View):
 
         await self._update(interaction)
 
-    @discord.ui.button(
-        custom_id="notification", label="Publish", row=4, disabled=True
-    )
+    @discord.ui.button(custom_id="notification", label="Publish", row=4, disabled=True)
     async def toggle_notification(
         self, interaction: discord.Interaction, button: discord.ui.Button
     ) -> None:
@@ -425,7 +464,7 @@ class AnnouncementBuilderView(discord.ui.View):
         if announcement.ping_preview and not announcement.ping:
             await interaction.response.send_message(
                 "You cannot have a ping preview selected without a ping!",
-                ephemeral=True, 
+                ephemeral=True,
             )
             return
 
@@ -437,8 +476,8 @@ class AnnouncementBuilderView(discord.ui.View):
 
         if announcement.youtube_url:
             message = await announcement.channel.send(
-            announcement.youtube_url,    
-        )
+                announcement.youtube_url,
+            )
             if announcement.will_notify:
                 await message.publish()
 

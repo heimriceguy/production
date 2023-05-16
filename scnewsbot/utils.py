@@ -7,7 +7,7 @@ class Config:
 
     @property
     def embed_color(self) -> int:
-        return 0x0504aa
+        return 0x0504AA
 
     @property
     def debug(self) -> bool:

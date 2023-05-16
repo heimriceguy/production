@@ -20,6 +20,7 @@ def main() -> None:
     bot = Bot(config)
     bot.run(DISCORD_TOKEN)
 
+
 if __name__ == "__main__":
     load_dotenv()
     main()
