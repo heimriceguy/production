@@ -424,7 +424,7 @@ class AnnouncementBuilderView(discord.ui.View):
 
         announcement = self.announcement_builder.announcement
         role = announcement.ping
-        youtube_url = announcement.youtube_url
+        video_url = announcement.video_url
         allowed_mentions = (
             discord.AllowedMentions(everyone=False, users=False, roles=[role])
             if role
@@ -464,9 +464,9 @@ class AnnouncementBuilderView(discord.ui.View):
         await interaction.channel.send("https://i.imgur.com/HRoxTzg.gif")
         self.stop()
 
-        if announcement.youtube_url:
+        if announcement.video_url:
             message = await announcement.channel.send(
-                announcement.youtube_url,
+                announcement.video_url,
             )
             if announcement.will_notify:
                 await message.publish()
