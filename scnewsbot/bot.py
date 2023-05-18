@@ -62,3 +62,13 @@ class CoreCog(commands.Cog, name="Core"):
             )
         )
         await ctx.reply(embed=embed, view=view, mention_author=False)
+
+    @commands.hybrid_command(description="Gives you instructions about using the embed creator.")
+    async def instructions(self, ctx: commands.Context) -> None:
+        embed = discord.Embed(
+            color=self.bot.config.embed_color,
+            title="Instructions",
+            description="1. Title should not use any formatting.\n2. Youtube link should only be used for Youtube links or video links with pretty embeds.\n3. URL should be used for any regular link such as a comm-link.\n4. In the description box use `-` and it will replace it with ➣, use `+` and it will replace it with ✦ preceeded by three spaces.\n5. Use the `&ids` to get the channel and role IDs.\n6. Do not ping for every post if there are consecutive posts in the same channel, instead ping only on the final post and provide an overall preview.\n7. **ALWAYS** include a ping preview, you can find these using `&previews`.\n8. Always select publish unless explicitly not needed (server only announcements). ",
+        )
+        view = discord.ui.View()
+        await ctx.reply(embed=embed, view=view, mention_author=False)

@@ -29,16 +29,6 @@ def reformat_description(description: str) -> str:
     return "\n".join(split_description)
 
 
-# def reformat_description(description: str) -> str:
-#    split_description = description.split("\n")
-#
-#    for index, line in enumerate(split_description):
-#        if line.startswith(">"):
-#            split_description[index] = "✦" + line[1:]
-#
-#    return "\n".join(split_description)
-
-
 class AnnouncementCog(commands.Cog, name="Announcements"):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
@@ -111,7 +101,7 @@ class Announcement:
         *,
         title: str = "Announcement",
         url: Optional[str] = None,
-        youtube_url: Optional[str] = None,
+        video_url: Optional[str] = None,
         description: Optional[str] = None,
         image_url: Optional[str] = None,
         channel: Optional[discord.abc.Messageable] = None,
@@ -123,7 +113,7 @@ class Announcement:
     ) -> None:
         self.title = title
         self.url = url
-        self.youtube_url = youtube_url
+        self.video_url = video_url
         self.description = description
         self.image_url = image_url
         self.channel = channel
@@ -215,7 +205,7 @@ class Announcement:
 
         ping = None
         ping_preview = None
-        youtube_url = None
+        video_url = None
         ping_message = await get_ping_message(message)
 
         if ping_message:
@@ -236,7 +226,7 @@ class Announcement:
         return cls(
             title=embed.title,
             url=url,
-            youtube_url=youtube_url,
+            video_url=video_url,
             description=description,
             image_url=embed.image.url,
             channel=message.channel,
@@ -274,9 +264,9 @@ class AnnouncementBuilder:
         self.add_option(Option(id="url", name="URL", row=1))
         self.add_option(
             Option(
-                id="youtube_url",
-                name="Youtube Link",
-                directions="Only use for Youtube links.",
+                id="video_url",
+                name="Video Link",
+                directions="Only use for video links with pretty embeds.",
                 row=1,
             )
         )
