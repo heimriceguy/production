@@ -76,3 +76,7 @@ class CoreCog(commands.Cog, name="Core"):
         )
         view = discord.ui.View()
         await ctx.reply(embed=embed, view=view, mention_author=False)
+
+    @commands.hybrid_command(description="For editing video URL.")
+    async def videoedit(self, ctx: commands.Context, message: discord.Message, new_content: str) -> None:
+        await message.edit(content=new_content)
