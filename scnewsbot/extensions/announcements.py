@@ -329,8 +329,7 @@ class AnnouncementBuilder:
 class AnnouncementBuilderView(discord.ui.View):
     def __init__(self, announcement_builder: AnnouncementBuilder, /) -> None:
         super().__init__(timeout=ANNOUNCEMENT_BUILDER_TIMEOUT)
-        self.announcement_builder = announcement_builder
-
+        self.announcement_builder = announcement_builder,
     def _has_permission(self, user: discord.User) -> bool:
         return user == self.announcement_builder.owner
 
@@ -410,7 +409,7 @@ class AnnouncementBuilderView(discord.ui.View):
 
         await self._update(interaction)
 
-    @discord.ui.button(
+    @discord.ui.button( 
         custom_id="publish", label="Post", style=discord.ButtonStyle.blurple, row=4
     )
     async def publish(
