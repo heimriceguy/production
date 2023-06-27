@@ -103,7 +103,7 @@ class Announcement:
         url: Optional[str] = None,
         video_url: Optional[str] = None,
         description: Optional[str] = None,
-        image_url: Optional[str] = 'https://media.discordapp.net/attachments/1062905729532571719/1123338199318675607/image.png?width=810&height=241',
+        image_url: Optional[str] = 'https://media.discordapp.net/attachments/1062905729532571719/1123340546979676311/NewsDefault.jpg?width=810&height=180',
         channel: Optional[discord.abc.Messageable] = None,
         ping: Optional[discord.Role] = None,
         ping_preview: Optional[str] = None,
@@ -176,7 +176,7 @@ class Announcement:
         if not self.is_private:
             if self.author_id:
                 author = await bot.fetch_user(self.author_id)
-                embed.set_footer(text=f"This post was written by {author}")
+                embed.set_footer(text=f"This post was written by {author.name}")
             else:
                 embed.set_footer(text="Unknown Author")
 
