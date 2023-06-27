@@ -7,7 +7,7 @@ import discord
 from utils import can_publish_announcements
 
 ANNOUNCEMENT_BUILDER_TIMEOUT = 1200
-EMBED_THUMBNAIL = "https://imgur.com/MJnM3LU.png"
+#EMBED_THUMBNAIL = "https://imgur.com/MJnM3LU.png"
 
 
 async def get_ping_message(message: discord.Message, /) -> Optional[discord.Message]:
@@ -103,7 +103,7 @@ class Announcement:
         url: Optional[str] = None,
         video_url: Optional[str] = None,
         description: Optional[str] = None,
-        image_url: Optional[str] = None,
+        image_url: Optional[str] = 'https://media.discordapp.net/attachments/1062905729532571719/1123338199318675607/image.png?width=810&height=241',
         channel: Optional[discord.abc.Messageable] = None,
         ping: Optional[discord.Role] = None,
         ping_preview: Optional[str] = None,
@@ -170,8 +170,8 @@ class Announcement:
         elif self.url:
             embed.description = self.url
 
-        if EMBED_THUMBNAIL:
-            embed.set_thumbnail(url=EMBED_THUMBNAIL)
+#        if EMBED_THUMBNAIL:
+#            embed.set_thumbnail(url=EMBED_THUMBNAIL)
 
         if not self.is_private:
             if self.author_id:
@@ -329,7 +329,7 @@ class AnnouncementBuilder:
 class AnnouncementBuilderView(discord.ui.View):
     def __init__(self, announcement_builder: AnnouncementBuilder, /) -> None:
         super().__init__(timeout=ANNOUNCEMENT_BUILDER_TIMEOUT)
-        self.announcement_builder = announcement_builder,
+        self.announcement_builder = announcement_builder
     def _has_permission(self, user: discord.User) -> bool:
         return user == self.announcement_builder.owner
 
@@ -409,7 +409,7 @@ class AnnouncementBuilderView(discord.ui.View):
 
         await self._update(interaction)
 
-    @discord.ui.button( 
+    @discord.ui.button(
         custom_id="publish", label="Post", style=discord.ButtonStyle.blurple, row=4
     )
     async def publish(
