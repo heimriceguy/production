@@ -330,7 +330,7 @@ class AnnouncementBuilder:
 class AnnouncementBuilderView(discord.ui.View):
     def __init__(self, announcement_builder: AnnouncementBuilder, /) -> None:
         super().__init__(timeout=ANNOUNCEMENT_BUILDER_TIMEOUT)
-        self.announcement_builder = announcement_builder.add_option
+        self.announcement_builder = announcement_builder
 
     def _has_permission(self, user: discord.User) -> bool:
         return user == self.announcement_builder.owner
