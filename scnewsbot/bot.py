@@ -3,7 +3,7 @@ from discord.ext import commands
 import discord
 from utils import Config
 
-VERSION = "0.0.0"
+VERSION = "2.0.2"
 INTENTS = discord.Intents.default()
 INTENTS.message_content = True
 INTENTS.members = True
@@ -49,18 +49,21 @@ class CoreCog(commands.Cog, name="Core"):
     async def info(self, ctx: commands.Context) -> None:
         embed = discord.Embed(
             color=self.bot.config.embed_color,
-            description="SCNewsBot is a Discord bot created for the r/starcitizen\n Discord server to help with writing news posts.",
+            title="Info",description="The SCNewsBot is a Discord bot created for the r/starcitizen\n Discord server to help with writing news posts.",
         )
         embed.add_field(
-            name="Version", value=f"v{self.bot.version}+{self._get_version()}"
+            name="Version", value=f"v{self.bot.version}"
         )
         embed.add_field(
-            name="Library", value=f"discord.py v{discord.__version__}", inline=False
+            name="Library", value=f"discord.py v{discord.__version__}", inline=True
+        )
+        embed.add_field(
+            name="Authors", value=f"Ian (@heimdallur) & mudkip (@mudkipdev)", inline=False
         )
         view = discord.ui.View()
         view.add_item(
             discord.ui.Button(
-                label="Source Code",
+                label="Public Source Code",
                 url="https://github.com/mudkipdev/scnewsbot",
                 style=discord.ButtonStyle.link,
             )
