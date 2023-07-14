@@ -43,7 +43,7 @@ class CoreCog(commands.Cog, name="Core"):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print ("The SC News Bot is online.")
+        print("The SC News Bot is online.")
 
     @commands.hybrid_command(description="Shows you some info about the bot.")
     async def info(self, ctx: commands.Context) -> None:
@@ -67,7 +67,9 @@ class CoreCog(commands.Cog, name="Core"):
         )
         await ctx.reply(embed=embed, view=view, mention_author=False)
 
-    @commands.hybrid_command(description="Gives you instructions about using the embed creator.")
+    @commands.hybrid_command(
+        description="Gives you instructions about using the embed creator."
+    )
     async def instructions(self, ctx: commands.Context) -> None:
         embed = discord.Embed(
             color=self.bot.config.embed_color,
@@ -78,6 +80,8 @@ class CoreCog(commands.Cog, name="Core"):
         await ctx.reply(embed=embed, view=view, mention_author=False)
 
     @commands.hybrid_command(description="For editing video URL.")
-    async def videoedit(self, ctx: commands.Context, message: discord.Message, new_content: str) -> None:
+    async def videoedit(
+        self, ctx: commands.Context, message: discord.Message, new_content: str
+    ) -> None:
         await message.edit(content=new_content)
         await ctx.reply("https://media3.giphy.com/media/l0Iyl55kTeh71nTXy/giphy.gif")
