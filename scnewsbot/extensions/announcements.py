@@ -1,5 +1,4 @@
 from __future__ import annotations
-
 from typing import Any, Optional, Callable, Awaitable
 from dataclasses import dataclass
 from discord.ext import commands
