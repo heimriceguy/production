@@ -110,7 +110,8 @@ class TemplatesCog(commands.Cog, name="Templates"):
     @commands.command(brief="Shows all the channel and role IDs for announcements.")
     async def ids(self, ctx: commands.Context) -> None:
         await ctx.reply(
-            embed=discord.Embed(color=self.bot.config.embed_color, description=IDS)
+            embed=discord.Embed(color=self.bot.config.embed_color, description=IDS),
+            allowed_mentions=discord.AllowedMentions.none(),
         )
 
 
